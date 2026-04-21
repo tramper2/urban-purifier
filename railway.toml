@@ -1,0 +1,15 @@
+[build]
+# 프로젝트 루트 디렉토리를 Source/backend로 설정
+root = "Source/backend"
+
+[deploy]
+# 시작 명령어
+startCommand = "npm run start:prod"
+
+# 헬스체크 설정
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+# 환경 변수
+[build.env]
+NODE_VERSION = "18"
