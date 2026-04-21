@@ -1,0 +1,19 @@
+# .github/workflows/deploy.yml
+name: Deploy Urban Purifier
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
+      - name: Deploy to Vercel/Railway
+        # 각 서비스의 CLI 또는 Action 사용
+        run: echo "Deploying to cloud..."

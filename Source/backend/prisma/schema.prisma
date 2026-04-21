@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://urbanpurifier:urbanpurifier123@localhost:5432/urban_purifier?schema=public"
+}
+
+enum TileState {
+  POLLUTED
+  CLEANSED
+  BUILDING
+}
+
+enum BuildingType {
+  RESIDENTIAL
+  POWER_PLANT
+  RADAR
+  PURIFIER_TOWER
+}
+
+model User {
+  id            String         @id @default(uuid())
+  username      String?        @unique
+  provider      String         @default("guest")
+  providerId    String?
+  totalEnergy   Int            @default(100)
+  hp            Int            @default(100)
+  createdAt     DateTime       @default(now())
+  lastSavedAt   DateTime       @updatedAt
+  gameSessions  GameSession[]
+  buildings     Building[]
+
+  @@map("users")
+}
+
+model GameSession {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  width           Int         @default(20)
+  height          Int         @default(20)
+  pollutantCount  Int         @default(30)
+  isActive        Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  tiles           Tile[]
+
+  @@map("game_sessions")
+}
+
+model Tile {
+  id              String      @id @default(uuid())
+  sessionId       String
+  session         GameSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  x               Int
+  y               Int
+  isPollutant     Boolean     @default(false)
+  adjacentCount   Int         @default(0)
+  state           TileState   @default(POLLUTED)
+  building        Building?
+  buildingId      String?     @unique
+  revealedAt      DateTime?
+
+  @@unique([sessionId, x, y])
+  @@index([sessionId, x, y])
+  @@map("map_tiles")
+}
+
+model Building {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tileId          String        @unique
+  tile            Tile          @relation(fields: [tileId], references: [id], onDelete: Cascade)
+  type            BuildingType
+  level           Int           @default(1)
+  productionRate  Int           @default(10)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@map("buildings")
+}
