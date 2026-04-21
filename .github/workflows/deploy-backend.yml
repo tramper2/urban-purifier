@@ -25,5 +25,4 @@ jobs:
       - name: Deploy to Railway
         run: |
           cd Source/backend
-          railway up --service-name urban-purifier-backend || railway link
-          railway deploy
+          railway up --service urban-purifier-backend
