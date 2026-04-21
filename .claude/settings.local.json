@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git commit -m 'Switch to Railway GitHub Action for deployment *)",
       "Bash(git commit -m 'Configure Railway CLI with environment variable token *)",
-      "Bash(git commit -m 'Fix GitHub Actions workflow syntax error *)"
+      "Bash(git commit -m 'Fix GitHub Actions workflow syntax error *)",
+      "Bash(railway up *)"
     ]
   }
 }

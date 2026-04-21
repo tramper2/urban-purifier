@@ -26,5 +26,4 @@ jobs:
         env:
           CI: true
         run: |
-          cd Source/backend
-          railway up -c --service urban-purifier
+          railway up --service 587dcc4b-c1f7-4beb-a9df-78bc63dae76b
